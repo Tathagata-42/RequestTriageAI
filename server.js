@@ -9,22 +9,29 @@ const app = express();
 // app.use(cors());
 
 
-  const allowedOrigins = [
-    "http://localhost:5173",
-    process.env.FRONTEND_URL,
-  ].filter(Boolean);
-  
-  app.use(
-    cors({
-      origin: (origin, cb) => {
-        // allow requests with no origin (Postman/curl)
-        if (!origin) return cb(null, true);
-        if (allowedOrigins.includes(origin)) return cb(null, true);
-        return cb(new Error(`CORS blocked for origin: ${origin}`));
-      },
-      credentials: true,
-    })
-  );
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:3001",
+
+  // ✅ Your Vercel app (add your real production URL here)
+  "https://request-triage-ai-front-p3h15dvbm-project42up.vercel.app",
+];
+
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // allow requests with no origin (Postman, curl)
+      if (!origin) return cb(null, true);
+
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+
+      return cb(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "x-admin-key"],
+  })
+);
 app.use(express.json());
 
 // -------------------- Clients --------------------
