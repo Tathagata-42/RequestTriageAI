@@ -126,6 +126,3 @@ Designed for dashboard consumption.
 
 ---
 
-## API Overview
-
-### Health
